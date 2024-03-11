@@ -17,7 +17,7 @@ export class ClientProxyService {
         urls: [
           `amqp://${this.configService.get<string>('RMQ_USER')}:${this.configService.get<string>('RMQ_PASSWORD')}@${this.configService.get<string>('RMQ_HOST')}`,
         ],
-        queue: 'produto-service',
+        queue: 'produtos',
       },
     });
   }

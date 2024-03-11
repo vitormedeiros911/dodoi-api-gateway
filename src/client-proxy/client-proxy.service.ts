@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import {
   ClientProxy,
   ClientProxyFactory,
-  RmqOptions,
   Transport,
 } from '@nestjs/microservices';
 
@@ -16,7 +15,7 @@ export class ClientProxyService {
   }
 
   private getRMQUri(): string {
-    return `amqp://${this.getEnvKey('RMQ_USER')}:${this.getEnvKey('RMQ_PASSWORD')}@${this.getEnvKey('RMQ_HOST')}:${this.getEnvKey('RMQ_PORT')}`;
+    return `amqp://${this.getEnvKey('RMQ_USER')}:${this.getEnvKey('RMQ_PASSWORD')}@${this.getEnvKey('RMQ_HOST')}`;
   }
 
   getClientProxyProdutoServiceInstance(): ClientProxy {
@@ -24,8 +23,8 @@ export class ClientProxyService {
       transport: Transport.RMQ,
       options: {
         urls: [this.getRMQUri()],
-        queue: 'dodoi-produto-service',
+        queue: 'produto-service',
       },
-    } as RmqOptions);
+    });
   }
 }

@@ -1,8 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ClientProxyService } from 'src/client-proxy/client-proxy.service';
 
 import { CriarProdutoDto } from './dto/criar-produto.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { FiltrosProdutoDto } from './dto/filtros-produto.dto';
 
 @ApiTags('produto')
 @Controller('produto')
@@ -15,5 +16,10 @@ export class ProdutoController {
   @Post()
   criarProduto(@Body() criarProdutoDto: CriarProdutoDto) {
     this.clientProdutoBackend.emit('criar-produto', criarProdutoDto);
+  }
+
+  @Get()
+  async buscarProdutos(@Query() filtrosProdutoDto: FiltrosProdutoDto) {
+    return this.clientProdutoBackend.send('buscar-produtos', filtrosProdutoDto);
   }
 }

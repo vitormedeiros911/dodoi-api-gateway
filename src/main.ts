@@ -5,6 +5,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { writeFile } from 'fs/promises';
 
 import { AppModule } from './app.module';
+import { ExceptionsFilter } from './shared/filter/exceptions.filter';
+import { LoggingInterceptor } from './shared/middlewares/logging.interceptor';
+import { TimeoutInterceptor } from './shared/middlewares/timeout.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +17,10 @@ async function bootstrap() {
     allowedHeaders: ['token', 'content-type'],
     exposedHeaders: ['Content-Disposition'],
   });
+
+  app.useGlobalInterceptors(new LoggingInterceptor(), new TimeoutInterceptor());
+
+  app.useGlobalFilters(new ExceptionsFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({

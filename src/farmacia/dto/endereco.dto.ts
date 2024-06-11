@@ -4,41 +4,52 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
-  IsUrl,
   MaxLength,
 } from 'class-validator';
 
-export class CriarProdutoDto {
-  @IsString()
-  @IsNotEmpty()
-  @IsDefined()
-  @MaxLength(100)
-  @ApiProperty()
-  nome: string;
+import { IEndereco } from '../interface/endereco.interface';
 
+export class EnderecoDto implements IEndereco {
   @IsString()
   @IsDefined()
   @IsNotEmpty()
-  @MaxLength(500)
   @ApiProperty()
-  descricao: string;
-
-  @IsString()
-  @IsDefined()
-  @IsNotEmpty()
-  @IsUrl()
-  @ApiProperty()
-  urlImagem: string;
+  logradouro: string;
 
   @IsNumber()
   @IsDefined()
   @IsNotEmpty()
   @ApiProperty()
-  precoUnitario: number;
+  numero: string;
+
+  @IsString()
+  @MaxLength(100)
+  @IsNotEmpty()
+  @ApiProperty()
+  complemento: string;
 
   @IsString()
   @IsDefined()
   @IsNotEmpty()
   @ApiProperty()
-  idFarmacia: string;
+  bairro: string;
+
+  @IsString()
+  @IsDefined()
+  @IsNotEmpty()
+  @ApiProperty()
+  cidade: string;
+
+  @IsString()
+  @IsDefined()
+  @IsNotEmpty()
+  @MaxLength(2)
+  @ApiProperty()
+  uf: string;
+
+  @IsString()
+  @IsDefined()
+  @IsNotEmpty()
+  @ApiProperty()
+  cep: string;
 }

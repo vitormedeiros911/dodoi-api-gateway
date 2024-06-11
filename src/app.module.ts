@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { ClientProxyModule } from './client-proxy/client-proxy.module';
+import { FarmaciaModule } from './farmacia/farmacia.module';
 import { ProdutoModule } from './produto/produto.module';
 
 @Module({
@@ -9,6 +10,7 @@ import { ProdutoModule } from './produto/produto.module';
     ConfigModule.forRoot({ isGlobal: true }),
     ClientProxyModule,
     ProdutoModule,
+    FarmaciaModule,
   ],
 })
 export class AppModule {}

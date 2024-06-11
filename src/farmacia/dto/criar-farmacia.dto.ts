@@ -2,13 +2,14 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDefined,
   IsNotEmpty,
-  IsNumber,
   IsString,
   IsUrl,
   MaxLength,
 } from 'class-validator';
 
-export class CriarProdutoDto {
+import { EnderecoDto } from './endereco.dto';
+
+export class CriarFarmaciaDto {
   @IsString()
   @IsNotEmpty()
   @IsDefined()
@@ -19,26 +20,27 @@ export class CriarProdutoDto {
   @IsString()
   @IsDefined()
   @IsNotEmpty()
-  @MaxLength(500)
-  @ApiProperty()
-  descricao: string;
-
-  @IsString()
-  @IsDefined()
-  @IsNotEmpty()
   @IsUrl()
   @ApiProperty()
   urlImagem: string;
 
-  @IsNumber()
-  @IsDefined()
-  @IsNotEmpty()
-  @ApiProperty()
-  precoUnitario: number;
-
   @IsString()
   @IsDefined()
   @IsNotEmpty()
   @ApiProperty()
-  idFarmacia: string;
+  cnpj: string;
+
+  @IsString()
+  @IsDefined()
+  @IsNotEmpty()
+  @MaxLength(100)
+  @ApiProperty()
+  razaoSocial: string;
+
+  @IsDefined()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: EnderecoDto,
+  })
+  endereco: EnderecoDto;
 }

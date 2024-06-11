@@ -23,7 +23,7 @@ export class ProdutoController {
     return this.clientProdutoBackend.send('buscar-produtos', filtrosProdutoDto);
   }
 
-  @Get('id')
+  @Get(':id')
   async buscarProdutoPorId(@Query('id') id: string) {
     return this.clientProdutoBackend.send('buscar-produto-por-id', id);
   }

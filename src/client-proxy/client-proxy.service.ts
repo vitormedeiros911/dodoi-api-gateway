@@ -21,4 +21,16 @@ export class ClientProxyService {
       },
     });
   }
+
+  getClientProxyFarmaciaServiceInstance(): ClientProxy {
+    return ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: [
+          `amqp://${this.configService.get<string>('RMQ_USER')}:${this.configService.get<string>('RMQ_PASSWORD')}@${this.configService.get<string>('RMQ_HOST')}`,
+        ],
+        queue: 'farmacias',
+      },
+    });
+  }
 }

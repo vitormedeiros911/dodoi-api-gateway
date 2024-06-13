@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ClientProxyService } from 'src/client-proxy/client-proxy.service';
 
@@ -24,7 +24,7 @@ export class ProdutoController {
   }
 
   @Get(':id')
-  async buscarProdutoPorId(@Query('id') id: string) {
+  async buscarProdutoPorId(@Param('id') id: string) {
     return this.clientProdutoBackend.send('buscar-produto-por-id', id);
   }
 }

@@ -3,12 +3,15 @@ import {
   IsDateString,
   IsDefined,
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsString,
   IsUrl,
   MaxLength,
 } from 'class-validator';
 import { EnderecoDto } from 'src/shared/dto/endereco.dto';
+
+import { PerfilEnum } from '../enum/perfil.enum';
 
 export class CriarUsuarioDto {
   @IsString()
@@ -56,4 +59,13 @@ export class CriarUsuarioDto {
     type: EnderecoDto,
   })
   endereco: EnderecoDto;
+
+  @IsDefined()
+  @IsNotEmpty()
+  @IsEnum(PerfilEnum, { each: true })
+  @ApiProperty({
+    enum: PerfilEnum,
+    isArray: true,
+  })
+  perfis: PerfilEnum[];
 }

@@ -44,7 +44,10 @@ async function bootstrap() {
   const porta = configService.get('PORT');
   const env = configService.get('NODE_ENV');
 
-  if (env === 'development') SwaggerModule.setup('/docs', app, documento);
+  if (env === 'development')
+    SwaggerModule.setup('/docs', app, documento, {
+      customSiteTitle: 'Dodoi API Gateway',
+    });
 
   await app.listen(porta);
 }

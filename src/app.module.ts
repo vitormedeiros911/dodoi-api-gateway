@@ -5,6 +5,7 @@ import { ClientProxyModule } from './client-proxy/client-proxy.module';
 import { FarmaciaModule } from './farmacia/farmacia.module';
 import { ProdutoModule } from './produto/produto.module';
 import { UsuarioModule } from './usuario/usuario.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UsuarioModule } from './usuario/usuario.module';
     ProdutoModule,
     FarmaciaModule,
     UsuarioModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

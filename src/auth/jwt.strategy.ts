@@ -4,13 +4,13 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { firstValueFrom } from 'rxjs';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
-import { IUsuario } from '../shared/interface/usuario.interface';
+import { IUsuario } from '../shared/interfaces/usuario.interface';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private clientProxyService: ClientProxyService) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromHeader('token'),
       secretOrKey: process.env.JWT_SECRET,
     });
   }
@@ -29,6 +29,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     if (!usuario) throw new UnauthorizedException('Usuário não encontrado');
 
-    return usuario;
+    return payload;
   }
 }

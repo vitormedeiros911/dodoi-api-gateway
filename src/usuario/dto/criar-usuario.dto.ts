@@ -11,7 +11,7 @@ import {
 } from 'class-validator';
 import { EnderecoDto } from 'src/shared/dto/endereco.dto';
 
-import { PerfilEnum } from '../enum/perfil.enum';
+import { PerfilEnum } from '../../shared/enum/perfil.enum';
 
 export class CriarUsuarioDto {
   @IsString()

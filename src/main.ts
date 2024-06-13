@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { writeFile } from 'fs/promises';
 
 import { AppModule } from './app.module';
-import { ExceptionsFilter } from './shared/filter/exceptions.filter';
+import { ExceptionsFilter } from './shared/filters/exceptions.filter';
 import { LoggingInterceptor } from './shared/middlewares/logging.interceptor';
 import { TimeoutInterceptor } from './shared/middlewares/timeout.interceptor';
 

@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { firstValueFrom } from 'rxjs';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
-import { IUsuario } from '../shared/interface/usuario.interface';
+import { IUsuario } from '../shared/interfaces/usuario.interface';
 import { LoginDto } from './dto/login.dto';
 import { IGoogleIdToken } from './interface/google-id-token.interface';
 
@@ -32,12 +32,12 @@ export class AuthService {
 
     if (!usuario) throw new UnauthorizedException('Email inválido');
 
-    const token = this.jwtService.sign({
+    const access_token = this.jwtService.sign({
       ...usuario,
     });
 
     return {
-      token,
+      access_token,
     };
   }
 }

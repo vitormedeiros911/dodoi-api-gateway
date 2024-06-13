@@ -7,7 +7,7 @@ import {
   MaxLength,
 } from 'class-validator';
 
-import { IEndereco } from '../interface/endereco.interface';
+import { IEndereco } from '../interfaces/endereco.interface';
 
 export class EnderecoDto implements IEndereco {
   @IsString()

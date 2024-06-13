@@ -1,7 +1,8 @@
-import { Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { ClientProxyService } from 'src/client-proxy/client-proxy.service';
+import { Body, Controller, HttpException, Post } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiTags } from '@nestjs/swagger';
+import { catchError, throwError } from 'rxjs';
 
+import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 
 @ApiTags('Usuário')
@@ -13,7 +14,14 @@ export class UsuarioController {
     this.clientProxyService.getClientProxyUsuarioServiceInstance();
 
   @Post()
-  async criarUsuario(criarUsuarioDto: CriarUsuarioDto): Promise<void> {
-    this.clientUsuarioBackend.emit('criar-usuario', criarUsuarioDto);
+  @ApiBadRequestResponse({ description: 'Usuário já cadastrado.' })
+  async criarUsuario(@Body() criarUsuarioDto: CriarUsuarioDto) {
+    return this.clientUsuarioBackend
+      .send('criar-usuario', criarUsuarioDto)
+      .pipe(
+        catchError((error) =>
+          throwError(() => new HttpException(error.response, error.status)),
+        ),
+      );
   }
 }

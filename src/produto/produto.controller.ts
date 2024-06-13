@@ -5,7 +5,7 @@ import { ClientProxyService } from 'src/client-proxy/client-proxy.service';
 import { CriarProdutoDto } from './dto/criar-produto.dto';
 import { FiltrosProdutoDto } from './dto/filtros-produto.dto';
 
-@ApiTags('produto')
+@ApiTags('Produto')
 @Controller('produto')
 export class ProdutoController {
   constructor(private clientProxyService: ClientProxyService) {}

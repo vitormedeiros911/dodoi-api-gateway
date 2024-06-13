@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ClientProxyModule } from './client-proxy/client-proxy.module';
 import { FarmaciaModule } from './farmacia/farmacia.module';
 import { ProdutoModule } from './produto/produto.module';
+import { UsuarioModule } from './usuario/usuario.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { ProdutoModule } from './produto/produto.module';
     ClientProxyModule,
     ProdutoModule,
     FarmaciaModule,
+    UsuarioModule,
   ],
 })
 export class AppModule {}

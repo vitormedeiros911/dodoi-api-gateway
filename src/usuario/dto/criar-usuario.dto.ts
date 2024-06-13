@@ -1,18 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsDateString,
   IsDefined,
+  IsEmail,
   IsNotEmpty,
   IsString,
   IsUrl,
   MaxLength,
 } from 'class-validator';
+import { EnderecoDto } from 'src/shared/dto/endereco.dto';
 
-import { EnderecoDto } from '../../shared/dto/endereco.dto';
-
-export class CriarFarmaciaDto {
+export class CriarUsuarioDto {
   @IsString()
-  @IsNotEmpty()
   @IsDefined()
+  @IsNotEmpty()
   @MaxLength(100)
   @ApiProperty()
   nome: string;
@@ -20,22 +21,28 @@ export class CriarFarmaciaDto {
   @IsString()
   @IsDefined()
   @IsNotEmpty()
+  @IsEmail()
+  @ApiProperty()
+  email: string;
+
+  @IsString()
   @IsUrl()
+  @IsDefined()
+  @IsNotEmpty()
   @ApiProperty()
   urlImagem: string;
 
-  @IsString()
-  @IsDefined()
+  @IsDateString()
   @IsNotEmpty()
+  @IsDefined()
   @ApiProperty()
-  cnpj: string;
+  dataNascimento: Date;
 
   @IsString()
   @IsDefined()
   @IsNotEmpty()
-  @MaxLength(100)
   @ApiProperty()
-  razaoSocial: string;
+  telefone: string;
 
   @IsDefined()
   @IsNotEmpty()

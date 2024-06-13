@@ -4,7 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { CriarFarmaciaDto } from './dto/criar-farmacia.dto';
 
-@ApiTags('farmacia')
+@ApiTags('Farmácia')
 @Controller('farmacia')
 export class FarmaciaController {
   constructor(private clientProxyService: ClientProxyService) {}

@@ -1,10 +1,5 @@
 import { Body, Controller, HttpException, Post } from '@nestjs/common';
-import {
-  ApiBadRequestResponse,
-  ApiNotFoundResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { catchError, throwError } from 'rxjs';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
@@ -21,9 +16,6 @@ export class UsuarioController {
   @Post()
   @ApiOperation({ summary: 'Criar usuário' })
   @ApiBadRequestResponse({ description: 'Usuário já cadastrado.' })
-  @ApiNotFoundResponse({
-    description: 'Não foi possível encontrar a farmácia.',
-  })
   async criarUsuario(@Body() criarUsuarioDto: CriarUsuarioDto) {
     return this.clientUsuarioBackend
       .send('criar-usuario', criarUsuarioDto)

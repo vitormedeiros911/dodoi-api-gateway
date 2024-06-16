@@ -11,6 +11,7 @@ import {
 } from 'class-validator';
 import { EnderecoDto } from 'src/shared/dto/endereco.dto';
 
+import { IsCPF } from '../../shared/decorators/is-cpf.decorator';
 import { PerfilEnum } from '../../shared/enum/perfil.enum';
 
 export class CriarUsuarioDto {
@@ -29,6 +30,7 @@ export class CriarUsuarioDto {
   email: string;
 
   @IsString()
+  @IsCPF()
   @IsDefined()
   @IsNotEmpty()
   @ApiProperty()
@@ -67,5 +69,5 @@ export class CriarUsuarioDto {
     enum: PerfilEnum,
     isArray: true,
   })
-  perfis: PerfilEnum[];
+  perfis: PerfilEnum[] = [PerfilEnum.CLIENTE];
 }

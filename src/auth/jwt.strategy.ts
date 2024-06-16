@@ -22,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const { id } = payload;
 
     const usuario: IUsuario = await firstValueFrom(
-      this.clientUsuarioBackend.send('buscar-usuario-para-autenticacao', {
+      this.clientUsuarioBackend.send('buscar-usuario', {
         id,
       }),
     );

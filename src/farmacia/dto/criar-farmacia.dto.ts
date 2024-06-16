@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDefined,
+  IsEmail,
   IsNotEmpty,
   IsString,
   IsUrl,
@@ -43,4 +44,11 @@ export class CriarFarmaciaDto {
     type: EnderecoDto,
   })
   endereco: EnderecoDto;
+
+  @IsString()
+  @IsEmail()
+  @IsDefined()
+  @IsNotEmpty()
+  @ApiProperty()
+  emailAdmin: string;
 }

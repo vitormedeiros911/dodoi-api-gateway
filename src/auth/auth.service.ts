@@ -25,10 +25,12 @@ export class AuthService {
     const email = tokenDecoded.email;
 
     const usuario: IUsuario = await firstValueFrom(
-      this.clientUsuarioBackend.send('buscar-usuario-para-autenticacao', {
+      this.clientUsuarioBackend.send('buscar-usuario', {
         email,
       }),
     );
+
+    console.log('usuario', usuario);
 
     if (!usuario) throw new UnauthorizedException('Email inválido');
 

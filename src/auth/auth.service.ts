@@ -30,8 +30,6 @@ export class AuthService {
       }),
     );
 
-    console.log('usuario', usuario);
-
     if (!usuario) throw new UnauthorizedException('Email inválido');
 
     const access_token = this.jwtService.sign({

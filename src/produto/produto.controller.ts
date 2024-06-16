@@ -2,20 +2,25 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { catchError, throwError } from 'rxjs';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
+import { GetUsuario } from '../shared/decorators/get-user.decorator';
 import { Perfis } from '../shared/decorators/perfis.decorator';
 import { PerfilEnum } from '../shared/enum/perfil.enum';
 import { PerfisGuard } from '../shared/guards/perfil.guard';
-import { CriarProdutoDto } from './dto/criar-produto.dto';
+import { IUsuario } from '../shared/interfaces/usuario.interface';
 import { FiltrosProdutoDto } from './dto/filtros-produto.dto';
+import { ProdutoDto } from './dto/produto.dto';
 
 @Controller('produto')
 @ApiTags('Produto')
@@ -31,8 +36,14 @@ export class ProdutoController {
   @UseGuards(PerfisGuard)
   @Perfis([PerfilEnum.ADMIN_FARMACIA])
   @ApiOperation({ summary: 'Criar produto' })
-  criarProduto(@Body() criarProdutoDto: CriarProdutoDto) {
-    this.clientProdutoBackend.emit('criar-produto', criarProdutoDto);
+  criarProduto(
+    @Body() produtoDto: ProdutoDto,
+    @GetUsuario() usuario: IUsuario,
+  ) {
+    this.clientProdutoBackend.emit('criar-produto', {
+      ...produtoDto,
+      idFarmacia: usuario.idFarmacia,
+    });
   }
 
   @Get()
@@ -45,5 +56,29 @@ export class ProdutoController {
   @ApiOperation({ summary: 'Buscar produto por id' })
   async buscarProdutoPorId(@Param('id') id: string) {
     return this.clientProdutoBackend.send('buscar-produto-por-id', id);
+  }
+
+  @Put(':id')
+  @UseGuards(PerfisGuard)
+  @Perfis([PerfilEnum.ADMIN_FARMACIA])
+  @ApiOperation({ summary: 'Atualizar produto' })
+  async atualizarProduto(
+    @Param('id') id: string,
+    @Body() produtoDto: ProdutoDto,
+    @GetUsuario() usuario: IUsuario,
+  ) {
+    return this.clientProdutoBackend
+      .send('atualizar-produto', {
+        id,
+        produto: {
+          ...produtoDto,
+          idFarmacia: usuario.idFarmacia,
+        },
+      })
+      .pipe(
+        catchError((error) =>
+          throwError(() => new HttpException(error.response, error.status)),
+        ),
+      );
   }
 }

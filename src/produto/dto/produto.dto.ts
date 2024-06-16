@@ -8,7 +8,7 @@ import {
   MaxLength,
 } from 'class-validator';
 
-export class CriarProdutoDto {
+export class ProdutoDto {
   @IsString()
   @IsNotEmpty()
   @IsDefined()
@@ -35,10 +35,4 @@ export class CriarProdutoDto {
   @IsNotEmpty()
   @ApiProperty()
   precoUnitario: number;
-
-  @IsString()
-  @IsDefined()
-  @IsNotEmpty()
-  @ApiProperty()
-  idFarmacia: string;
 }

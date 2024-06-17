@@ -6,6 +6,8 @@ import { FarmaciaModule } from './farmacia/farmacia.module';
 import { ProdutoModule } from './produto/produto.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './auth/auth.module';
+import { CarrinhoModule } from './carrinho/carrinho.module';
+import { CarrinhoModule } from './carrinho/carrinho.module';
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
     FarmaciaModule,
     UsuarioModule,
     AuthModule,
+    CarrinhoModule,
   ],
 })
 export class AppModule {}

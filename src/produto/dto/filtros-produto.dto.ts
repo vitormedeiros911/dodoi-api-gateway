@@ -1,11 +1,14 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsDefined,
+  IsEnum,
   IsNotEmpty,
   IsNumberString,
   IsOptional,
   IsString,
 } from 'class-validator';
+
+import { StatusEnum } from '../../shared/enum/status.enum';
 
 export class FiltrosProdutoDto {
   @IsString()
@@ -13,6 +16,12 @@ export class FiltrosProdutoDto {
   @IsOptional()
   @ApiPropertyOptional()
   nome: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsEnum(StatusEnum, { each: true })
+  @ApiPropertyOptional({ enum: StatusEnum, isArray: true })
+  status: string[];
 
   @IsNumberString()
   @IsNotEmpty()

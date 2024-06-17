@@ -10,7 +10,7 @@ import {
 
 import { EnderecoDto } from '../../shared/dto/endereco.dto';
 
-export class CriarFarmaciaDto {
+export class FarmaciaDto {
   @IsString()
   @IsNotEmpty()
   @IsDefined()

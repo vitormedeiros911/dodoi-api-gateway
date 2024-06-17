@@ -1,12 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDefined,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUrl,
   MaxLength,
 } from 'class-validator';
+import { StatusEnum } from 'src/shared/enum/status.enum';
 
 export class ProdutoDto {
   @IsString()
@@ -17,7 +20,6 @@ export class ProdutoDto {
   nome: string;
 
   @IsString()
-  @IsDefined()
   @IsNotEmpty()
   @MaxLength(500)
   @ApiProperty()
@@ -35,4 +37,10 @@ export class ProdutoDto {
   @IsNotEmpty()
   @ApiProperty()
   precoUnitario: number;
+
+  @IsEnum(StatusEnum)
+  @IsOptional()
+  @IsNotEmpty()
+  @ApiProperty({ enum: StatusEnum })
+  status: StatusEnum;
 }

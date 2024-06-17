@@ -51,4 +51,14 @@ export class ClientProxyService {
       },
     });
   }
+
+  getClientProxyPedidoServiceInstance(): ClientProxy {
+    return ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: [this.url],
+        queue: 'pedidos',
+      },
+    });
+  }
 }

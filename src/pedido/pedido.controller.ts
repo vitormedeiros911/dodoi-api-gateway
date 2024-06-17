@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 
@@ -7,6 +7,7 @@ import { GetUsuario } from '../shared/decorators/get-user.decorator';
 import { Perfis } from '../shared/decorators/perfis.decorator';
 import { PerfilEnum } from '../shared/enum/perfil.enum';
 import { IUsuario } from '../shared/interfaces/usuario.interface';
+import { FiltrosPedidoDto } from './dto/filtros-pedido.dto';
 import { PedidoDto } from './dto/pedido.dto';
 
 @ApiTags('Pedido')
@@ -22,10 +23,20 @@ export class PedidoController {
   @Post()
   @Perfis([PerfilEnum.CLIENTE])
   @ApiOperation({ summary: 'Criar um pedido' })
-  async criarPedido(pedido: PedidoDto, @GetUsuario() usuario: IUsuario) {
+  async criarPedido(
+    @Body() pedido: PedidoDto,
+    @GetUsuario() usuario: IUsuario,
+  ) {
     return this.clientPedidoBackend.emit('criar-pedido', {
       idCliente: usuario.id,
       ...pedido,
     });
+  }
+
+  @Get()
+  @Perfis([PerfilEnum.CLIENTE, PerfilEnum.ADMIN_FARMACIA])
+  @ApiOperation({ summary: 'Listar pedidos' })
+  async listarPedidos(@Query() filtrosPedidoDto: FiltrosPedidoDto) {
+    return this.clientPedidoBackend.send('listar-pedidos', filtrosPedidoDto);
   }
 }

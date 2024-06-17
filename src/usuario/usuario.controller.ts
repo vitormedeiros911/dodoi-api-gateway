@@ -1,8 +1,23 @@
-import { Body, Controller, HttpException, Post } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import {
+  ApiBadRequestResponse,
+  ApiOperation,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
 import { catchError, throwError } from 'rxjs';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
+import { GetUsuario } from '../shared/decorators/get-user.decorator';
+import { IUsuario } from '../shared/interfaces/usuario.interface';
 import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 
 @ApiTags('Usuário')
@@ -24,5 +39,13 @@ export class UsuarioController {
           throwError(() => new HttpException(error.response, error.status)),
         ),
       );
+  }
+
+  @Get('/perfil')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiSecurity('token')
+  @ApiOperation({ summary: 'Buscar perfil de usuário' })
+  async buscarPerfilUsuario(@GetUsuario() usuario: IUsuario) {
+    return this.clientUsuarioBackend.send('buscar-perfil-usuario', usuario.id);
   }
 }

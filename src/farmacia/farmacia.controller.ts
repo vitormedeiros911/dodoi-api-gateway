@@ -25,6 +25,9 @@ export class FarmaciaController {
   private clientFarmaciaBackend =
     this.clientProxyService.getClientProxyFarmaciaServiceInstance();
 
+  private clientPedidoBackend =
+    this.clientProxyService.getClientProxyPedidoServiceInstance();
+
   @Post()
   @ApiOperation({ summary: 'Criar farmácia' })
   criarFarmacia(@Body() farmaciaDto: FarmaciaDto) {
@@ -59,5 +62,13 @@ export class FarmaciaController {
           throw new HttpException(error.response, error.status);
         }),
       );
+  }
+
+  @Put('pedido/:idPedido/aceitar')
+  @UseGuards(AuthGuard('jwt'))
+  @Perfis([PerfilEnum.ADMIN_FARMACIA])
+  @ApiOperation({ summary: 'Aceitar pedido' })
+  async aceitarPedido(@Param('idPedido') idPedido: string) {
+    this.clientPedidoBackend.emit('aceitar-pedido', { idPedido });
   }
 }

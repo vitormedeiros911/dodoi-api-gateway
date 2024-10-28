@@ -4,6 +4,7 @@ import {
   Get,
   HttpException,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -18,6 +19,7 @@ import { catchError, throwError } from 'rxjs';
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { GetUsuario } from '../shared/decorators/get-user.decorator';
 import { IUsuario } from '../shared/interfaces/usuario.interface';
+import { AtualizarUsuarioDto } from './dto/atualizar-usuario.dto';
 import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 
 @ApiTags('Usuário')
@@ -47,5 +49,19 @@ export class UsuarioController {
   @ApiOperation({ summary: 'Buscar perfil de usuário' })
   async buscarPerfilUsuario(@GetUsuario() usuario: IUsuario) {
     return this.clientUsuarioBackend.send('buscar-perfil-usuario', usuario.id);
+  }
+
+  @Put()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiSecurity('token')
+  @ApiOperation({ summary: 'Atualizar usuário' })
+  atualizarUsuario(
+    @GetUsuario() usuario: IUsuario,
+    @Body() atualizarUsuarioDto: AtualizarUsuarioDto,
+  ) {
+    this.clientUsuarioBackend.emit('atualizar-usuario', {
+      id: usuario.id,
+      ...atualizarUsuarioDto,
+    });
   }
 }

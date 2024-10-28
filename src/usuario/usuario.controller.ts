@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpException,
+  Patch,
   Post,
   Put,
   UseGuards,
@@ -63,5 +64,13 @@ export class UsuarioController {
       id: usuario.id,
       ...atualizarUsuarioDto,
     });
+  }
+
+  @Patch('/inativar')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiSecurity('token')
+  @ApiOperation({ summary: 'Inativar usuário' })
+  inativarUsuario(@GetUsuario() usuario: IUsuario) {
+    this.clientUsuarioBackend.emit('inativar-usuario', usuario.id);
   }
 }

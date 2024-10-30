@@ -1,16 +1,10 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsDefined,
-  IsEnum,
-  IsNotEmpty,
-  IsNumberString,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
+import { PaginationDto } from '../../shared/dto/pagination.dto';
 import { StatusEnum } from '../../shared/enum/status.enum';
 
-export class FiltrosProdutoDto {
+export class FiltrosProdutoDto extends PaginationDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
@@ -22,16 +16,4 @@ export class FiltrosProdutoDto {
   @IsEnum(StatusEnum, { each: true })
   @ApiPropertyOptional({ enum: StatusEnum, isArray: true })
   status: string[];
-
-  @IsNumberString()
-  @IsNotEmpty()
-  @IsOptional()
-  @ApiPropertyOptional()
-  skip: number;
-
-  @IsNumberString()
-  @IsNotEmpty()
-  @IsDefined()
-  @ApiPropertyOptional({ default: 10 })
-  limit: number;
 }

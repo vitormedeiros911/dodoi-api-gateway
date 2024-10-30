@@ -1,8 +1,10 @@
-import { IsEnum, IsNotEmpty, IsNumberString, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+
+import { PaginationDto } from '../../shared/dto/pagination.dto';
 import { StatusPedidoEnum } from '../enum/status-pedido.enum';
 
-export class FiltrosPedidoDto {
+export class FiltrosPedidoDto extends PaginationDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({ required: false })
@@ -22,12 +24,4 @@ export class FiltrosPedidoDto {
   @IsNotEmpty()
   @ApiProperty({ required: false, enum: StatusPedidoEnum, isArray: true })
   status: string[];
-
-  @IsNumberString()
-  @ApiProperty({ required: false, default: 0 })
-  skip: number;
-
-  @IsNumberString()
-  @ApiProperty({ required: false, default: 10 })
-  limit: number;
 }

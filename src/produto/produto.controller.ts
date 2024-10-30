@@ -12,6 +12,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { catchError, throwError } from 'rxjs';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { GetUsuario } from '../shared/decorators/get-user.decorator';
@@ -19,6 +20,7 @@ import { Perfis } from '../shared/decorators/perfis.decorator';
 import { PerfilEnum } from '../shared/enum/perfil.enum';
 import { PerfisGuard } from '../shared/guards/perfil.guard';
 import { IUsuario } from '../shared/interfaces/usuario.interface';
+import { FavoritoDto } from './dto/favoritos.dto';
 import { FiltrosProdutoDto } from './dto/filtros-produto.dto';
 import { ProdutoDto } from './dto/produto.dto';
 
@@ -50,6 +52,34 @@ export class ProdutoController {
   @ApiOperation({ summary: 'Buscar produtos' })
   async buscarProdutos(@Query() filtrosProdutoDto: FiltrosProdutoDto) {
     return this.clientProdutoBackend.send('buscar-produtos', filtrosProdutoDto);
+  }
+
+  @Post('favorito')
+  @UseGuards(PerfisGuard)
+  @Perfis([PerfilEnum.CLIENTE])
+  @ApiOperation({ summary: 'Criar favorito' })
+  criarFavorito(
+    @Body() favoritoDto: FavoritoDto,
+    @GetUsuario() usuario: IUsuario,
+  ) {
+    this.clientProdutoBackend.emit('criar-favorito', {
+      ...favoritoDto,
+      idCliente: usuario.idFarmacia,
+    });
+  }
+
+  @Get('favoritos')
+  @UseGuards(PerfisGuard)
+  @Perfis([PerfilEnum.CLIENTE])
+  @ApiOperation({ summary: 'Buscar produtos favoritos' })
+  async buscarProdutosFavoritos(
+    @GetUsuario() usuario: IUsuario,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.clientProdutoBackend.send('buscar-produtos-favoritos', {
+      ...paginationDto,
+      idCliente: usuario.id,
+    });
   }
 
   @Get(':id')

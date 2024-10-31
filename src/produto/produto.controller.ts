@@ -12,11 +12,11 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { catchError, throwError } from 'rxjs';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { GetUsuario } from '../shared/decorators/get-user.decorator';
 import { Perfis } from '../shared/decorators/perfis.decorator';
+import { PaginationDto } from '../shared/dto/pagination.dto';
 import { PerfilEnum } from '../shared/enum/perfil.enum';
 import { PerfisGuard } from '../shared/guards/perfil.guard';
 import { IUsuario } from '../shared/interfaces/usuario.interface';
@@ -64,7 +64,7 @@ export class ProdutoController {
   ) {
     this.clientProdutoBackend.emit('criar-favorito', {
       ...favoritoDto,
-      idCliente: usuario.idFarmacia,
+      idCliente: usuario.id,
     });
   }
 

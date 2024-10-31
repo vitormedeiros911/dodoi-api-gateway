@@ -11,6 +11,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiOperation,
   ApiSecurity,
   ApiTags,
@@ -19,6 +20,7 @@ import { catchError, throwError } from 'rxjs';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { GetUsuario } from '../shared/decorators/get-user.decorator';
+import { PerfilEnum } from '../shared/enum/perfil.enum';
 import { IUsuario } from '../shared/interfaces/usuario.interface';
 import { AtualizarUsuarioDto } from './dto/atualizar-usuario.dto';
 import { CriarUsuarioDto } from './dto/criar-usuario.dto';
@@ -72,5 +74,33 @@ export class UsuarioController {
   @ApiOperation({ summary: 'Inativar usuário' })
   inativarUsuario(@GetUsuario() usuario: IUsuario) {
     this.clientUsuarioBackend.emit('inativar-usuario', usuario.id);
+  }
+
+  @Patch('/perfil')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiSecurity('token')
+  @ApiOperation({ summary: 'Atualizar perfil de usuário' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        perfis: {
+          type: 'array',
+          items: {
+            type: 'string',
+            enum: Object.values(PerfilEnum),
+          },
+        },
+      },
+    },
+  })
+  atualizarPerfilUsuario(
+    @GetUsuario() usuario: IUsuario,
+    @Body() perfisDto: { perfis: PerfilEnum[] },
+  ) {
+    this.clientUsuarioBackend.emit('atualizar-usuario', {
+      id: usuario.id,
+      perfis: perfisDto.perfis,
+    });
   }
 }

@@ -1,29 +1,12 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpException,
-  Patch,
-  Post,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Patch, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import {
-  ApiBadRequestResponse,
-  ApiBody,
-  ApiOperation,
-  ApiSecurity,
-  ApiTags,
-} from '@nestjs/swagger';
-import { catchError, throwError } from 'rxjs';
+import { ApiBody, ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { GetUsuario } from '../shared/decorators/get-user.decorator';
 import { PerfilEnum } from '../shared/enum/perfil.enum';
 import { IUsuario } from '../shared/interfaces/usuario.interface';
 import { AtualizarUsuarioDto } from './dto/atualizar-usuario.dto';
-import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 
 @ApiTags('Usuário')
 @Controller('usuario')
@@ -32,19 +15,6 @@ export class UsuarioController {
 
   private clientUsuarioBackend =
     this.clientProxyService.getClientProxyUsuarioServiceInstance();
-
-  @Post()
-  @ApiOperation({ summary: 'Criar usuário' })
-  @ApiBadRequestResponse({ description: 'Usuário já cadastrado.' })
-  async criarUsuario(@Body() criarUsuarioDto: CriarUsuarioDto) {
-    return this.clientUsuarioBackend
-      .send('criar-usuario', criarUsuarioDto)
-      .pipe(
-        catchError((error) =>
-          throwError(() => new HttpException(error.response, error.status)),
-        ),
-      );
-  }
 
   @Get('/perfil')
   @UseGuards(AuthGuard('jwt'))

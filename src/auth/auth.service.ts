@@ -1,6 +1,7 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom, throwError } from 'rxjs';
+import { CriarUsuarioDto } from 'src/usuario/dto/criar-usuario.dto';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { IUsuario } from '../shared/interfaces/usuario.interface';
@@ -30,7 +31,23 @@ export class AuthService {
       }),
     );
 
-    if (!usuario) throw new UnauthorizedException('Email inválido');
+    if (!usuario)
+      await firstValueFrom(
+        this.clientUsuarioBackend
+          .send(
+            'criar-usuario',
+            new CriarUsuarioDto({
+              email,
+              nome: tokenDecoded.name,
+              urlImagem: tokenDecoded.picture,
+            }),
+          )
+          .pipe(
+            catchError((error) =>
+              throwError(() => new HttpException(error.response, error.status)),
+            ),
+          ),
+      );
 
     const access_token = this.jwtService.sign({
       ...usuario,

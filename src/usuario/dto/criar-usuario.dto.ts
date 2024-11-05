@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsDateString,
   IsDefined,
   IsEmail,
   IsEnum,
@@ -9,12 +8,14 @@ import {
   IsUrl,
   MaxLength,
 } from 'class-validator';
-import { EnderecoDto } from 'src/shared/dto/endereco.dto';
 
-import { IsCPF } from '../../shared/decorators/is-cpf.decorator';
 import { PerfilEnum } from '../../shared/enum/perfil.enum';
 
 export class CriarUsuarioDto {
+  constructor(partial: Partial<CriarUsuarioDto>) {
+    Object.assign(this, partial);
+  }
+
   @IsString()
   @IsDefined()
   @IsNotEmpty()
@@ -30,37 +31,11 @@ export class CriarUsuarioDto {
   email: string;
 
   @IsString()
-  @IsCPF()
-  @IsDefined()
-  @IsNotEmpty()
-  @ApiProperty()
-  cpf: string;
-
-  @IsString()
   @IsUrl()
   @IsDefined()
   @IsNotEmpty()
   @ApiProperty()
   urlImagem: string;
-
-  @IsDateString()
-  @IsNotEmpty()
-  @IsDefined()
-  @ApiProperty()
-  dataNascimento: Date;
-
-  @IsString()
-  @IsDefined()
-  @IsNotEmpty()
-  @ApiProperty()
-  telefone: string;
-
-  @IsDefined()
-  @IsNotEmpty()
-  @ApiProperty({
-    type: EnderecoDto,
-  })
-  endereco: EnderecoDto;
 
   @IsDefined()
   @IsNotEmpty()

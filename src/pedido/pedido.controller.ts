@@ -39,4 +39,11 @@ export class PedidoController {
   async listarPedidos(@Query() filtrosPedidoDto: FiltrosPedidoDto) {
     return this.clientPedidoBackend.send('listar-pedidos', filtrosPedidoDto);
   }
+
+  @Post('aceitar')
+  @Perfis([PerfilEnum.ADMIN_FARMACIA])
+  @ApiOperation({ summary: 'Aceitar um pedido' })
+  async aceitarPedido(@Body('idPedido') idPedido: string) {
+    return this.clientPedidoBackend.emit('aceitar-pedido', idPedido);
+  }
 }

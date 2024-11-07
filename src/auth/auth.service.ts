@@ -54,6 +54,7 @@ export class AuthService {
     });
 
     return {
+      usuario,
       access_token,
     };
   }

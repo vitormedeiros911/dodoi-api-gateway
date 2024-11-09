@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -16,6 +17,7 @@ import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { Perfis } from '../shared/decorators/perfis.decorator';
 import { PerfilEnum } from '../shared/enum/perfil.enum';
 import { FarmaciaDto } from './dto/farmacia.dto';
+import { FiltrosFarmaciaDto } from './dto/filtros-produto.dto';
 
 @ApiTags('Farmácia')
 @Controller('farmacia')
@@ -35,6 +37,15 @@ export class FarmaciaController {
       catchError((error) => {
         throw new HttpException(error.response, error.status);
       }),
+    );
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Buscar farmácias' })
+  async buscarProdutos(@Query() filtrosFarmaciaDto: FiltrosFarmaciaDto) {
+    return this.clientFarmaciaBackend.send(
+      'buscar-farmacias',
+      filtrosFarmaciaDto,
     );
   }
 

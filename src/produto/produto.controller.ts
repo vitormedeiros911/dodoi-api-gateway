@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   Param,
@@ -68,6 +69,17 @@ export class ProdutoController {
     });
   }
 
+  @Delete(':id/favorito')
+  @UseGuards(PerfisGuard)
+  @Perfis([PerfilEnum.CLIENTE])
+  @ApiOperation({ summary: 'Remover favorito' })
+  deletarFavorito(@Param('id') id: string, @GetUsuario() usuario: IUsuario) {
+    this.clientProdutoBackend.emit('remover-favorito', {
+      idProduto: id,
+      idCliente: usuario.id,
+    });
+  }
+
   @Get('favoritos')
   @UseGuards(PerfisGuard)
   @Perfis([PerfilEnum.CLIENTE])
@@ -84,9 +96,12 @@ export class ProdutoController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Buscar produto por id' })
-  async buscarProdutoPorId(@Param('id') id: string) {
+  async buscarProdutoPorId(
+    @Param('id') id: string,
+    @GetUsuario() usuario: IUsuario,
+  ) {
     return this.clientProdutoBackend
-      .send('buscar-produto-por-id', id)
+      .send('buscar-produto-por-id', { id, idCliente: usuario.id })
       .pipe(
         catchError((error) =>
           throwError(() => new HttpException(error.response, error.status)),

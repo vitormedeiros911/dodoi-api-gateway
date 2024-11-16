@@ -1,10 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { catchError, firstValueFrom, throwError } from 'rxjs';
-import { CriarUsuarioDto } from 'src/usuario/dto/criar-usuario.dto';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { IUsuario } from '../shared/interfaces/usuario.interface';
+import { CriarUsuarioDto } from '../usuario/dto/criar-usuario.dto';
 import { LoginDto } from './dto/login.dto';
 import { IGoogleIdToken } from './interface/google-id-token.interface';
 
@@ -31,7 +31,9 @@ export class AuthService {
       }),
     );
 
-    if (!usuario)
+    let primeiroAcesso = false;
+
+    if (!usuario) {
       await firstValueFrom(
         this.clientUsuarioBackend
           .send(
@@ -49,12 +51,16 @@ export class AuthService {
           ),
       );
 
+      primeiroAcesso = true;
+    }
+
     const access_token = this.jwtService.sign({
       ...usuario,
     });
 
     return {
       usuario,
+      primeiroAcesso,
       access_token,
     };
   }

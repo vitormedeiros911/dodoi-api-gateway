@@ -8,6 +8,7 @@ import { PagamentoModule } from './pagamento/pagamento.module';
 import { PedidoModule } from './pedido/pedido.module';
 import { ProdutoModule } from './produto/produto.module';
 import { UsuarioModule } from './usuario/usuario.module';
+import { WebhookModule } from './webhook/webhook.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UsuarioModule } from './usuario/usuario.module';
     AuthModule,
     PedidoModule,
     PagamentoModule,
+    WebhookModule,
   ],
 })
 export class AppModule {}

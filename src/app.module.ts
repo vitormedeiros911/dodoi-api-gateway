@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { AuthModule } from './auth/auth.module';
-import { CarrinhoModule } from './carrinho/carrinho.module';
 import { ClientProxyModule } from './client-proxy/client-proxy.module';
 import { FarmaciaModule } from './farmacia/farmacia.module';
+import { PagamentoModule } from './pagamento/pagamento.module';
 import { PedidoModule } from './pedido/pedido.module';
 import { ProdutoModule } from './produto/produto.module';
 import { UsuarioModule } from './usuario/usuario.module';
@@ -17,8 +17,8 @@ import { UsuarioModule } from './usuario/usuario.module';
     FarmaciaModule,
     UsuarioModule,
     AuthModule,
-    CarrinhoModule,
     PedidoModule,
+    PagamentoModule,
   ],
 })
 export class AppModule {}

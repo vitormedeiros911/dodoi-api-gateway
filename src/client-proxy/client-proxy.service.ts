@@ -12,6 +12,16 @@ export class ClientProxyService {
 
   private url = `amqp://${this.configService.get<string>('RMQ_USER')}:${this.configService.get<string>('RMQ_PASSWORD')}@${this.configService.get<string>('RMQ_HOST')}`;
 
+  getClientProxyPagamentoServiceInstance(): ClientProxy {
+    return ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: [this.url],
+        queue: 'pagamentos',
+      },
+    });
+  }
+
   getClientProxyProdutoServiceInstance(): ClientProxy {
     return ClientProxyFactory.create({
       transport: Transport.RMQ,

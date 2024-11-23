@@ -3,12 +3,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
-import { GetUsuario } from '../shared/decorators/get-user.decorator';
 import { Perfis } from '../shared/decorators/perfis.decorator';
 import { PerfilEnum } from '../shared/enum/perfil.enum';
-import { IUsuario } from '../shared/interfaces/usuario.interface';
 import { FiltrosPedidoDto } from './dto/filtros-pedido.dto';
-import { PedidoDto } from './dto/pedido.dto';
 
 @ApiTags('Pedido')
 @UseGuards(AuthGuard('jwt'))
@@ -19,19 +16,6 @@ export class PedidoController {
 
   private clientPedidoBackend =
     this.clientProxyService.getClientProxyPedidoServiceInstance();
-
-  @Post()
-  @Perfis([PerfilEnum.CLIENTE])
-  @ApiOperation({ summary: 'Criar um pedido' })
-  async criarPedido(
-    @Body() pedido: PedidoDto,
-    @GetUsuario() usuario: IUsuario,
-  ) {
-    return this.clientPedidoBackend.emit('criar-pedido', {
-      idCliente: usuario.id,
-      ...pedido,
-    });
-  }
 
   @Get()
   @Perfis([PerfilEnum.CLIENTE, PerfilEnum.ADMIN_FARMACIA])

@@ -25,16 +25,15 @@ export class AuthService {
 
     const email = tokenDecoded.email;
 
-    const usuario: IUsuario = await firstValueFrom(
+    let usuario: IUsuario = await firstValueFrom(
       this.clientUsuarioBackend.send('buscar-usuario', {
         email,
       }),
     );
 
     let primeiroAcesso = false;
-
     if (!usuario) {
-      await firstValueFrom(
+      usuario = await firstValueFrom(
         this.clientUsuarioBackend
           .send(
             'criar-usuario',

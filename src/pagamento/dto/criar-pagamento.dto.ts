@@ -8,6 +8,7 @@ import {
 } from 'class-validator';
 
 import { ItemPedidoDto } from '../../pedido/dto/item-pedido.dto';
+import { EnderecoDto } from '../../shared/dto/endereco.dto';
 
 export class CriarPagamentoDto {
   @IsNumber()
@@ -31,4 +32,10 @@ export class CriarPagamentoDto {
   @IsNotEmpty()
   @IsDefined()
   itens: ItemPedidoDto[];
+
+  @IsNotEmpty()
+  @ApiProperty({
+    type: EnderecoDto,
+  })
+  endereco: EnderecoDto;
 }

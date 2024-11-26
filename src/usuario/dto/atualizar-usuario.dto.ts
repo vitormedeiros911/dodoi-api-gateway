@@ -5,7 +5,6 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
-  IsUrl,
   MaxLength,
 } from 'class-validator';
 
@@ -19,17 +18,17 @@ export class AtualizarUsuarioDto {
   nome: string;
 
   @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  @MaxLength(14)
+  cpf: string;
+
+  @IsString()
   @IsDefined()
   @IsNotEmpty()
   @IsEmail()
   @ApiProperty()
   email: string;
-
-  @IsString()
-  @IsUrl()
-  @IsNotEmpty()
-  @ApiProperty()
-  urlImagem: string;
 
   @IsDateString()
   @IsNotEmpty()

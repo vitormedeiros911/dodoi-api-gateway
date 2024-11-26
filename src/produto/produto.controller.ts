@@ -75,7 +75,7 @@ export class ProdutoController {
   @ApiOperation({ summary: 'Remover favorito' })
   deletarFavorito(@Param('id') id: string, @GetUsuario() usuario: IUsuario) {
     this.clientProdutoBackend.emit('remover-favorito', {
-      idProduto: id,
+      produto: { id },
       idCliente: usuario.id,
     });
   }

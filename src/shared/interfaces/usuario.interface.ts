@@ -1,3 +1,5 @@
+import { StatusEnum } from '../enum/status.enum';
+
 export interface IUsuario {
   id: string;
   nome: string;
@@ -5,4 +7,5 @@ export interface IUsuario {
   urlImagem: string;
   idFarmacia: string;
   perfis: string[];
+  status: StatusEnum;
 }

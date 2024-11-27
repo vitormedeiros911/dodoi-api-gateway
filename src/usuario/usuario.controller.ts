@@ -1,7 +1,10 @@
 import { Body, Controller, Get, Patch, Put, UseGuards } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 
+import { LoginDto } from '../auth/dto/login.dto';
+import { IGoogleIdToken } from '../auth/interface/google-id-token.interface';
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { GetUsuario } from '../shared/decorators/get-user.decorator';
 import { PerfilEnum } from '../shared/enum/perfil.enum';
@@ -11,7 +14,10 @@ import { AtualizarUsuarioDto } from './dto/atualizar-usuario.dto';
 @ApiTags('Usuário')
 @Controller('usuario')
 export class UsuarioController {
-  constructor(private readonly clientProxyService: ClientProxyService) {}
+  constructor(
+    private readonly clientProxyService: ClientProxyService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   private clientUsuarioBackend =
     this.clientProxyService.getClientProxyUsuarioServiceInstance();
@@ -44,6 +50,17 @@ export class UsuarioController {
   @ApiOperation({ summary: 'Inativar usuário' })
   inativarUsuario(@GetUsuario() usuario: IUsuario) {
     this.clientUsuarioBackend.emit('inativar-usuario', usuario.id);
+  }
+
+  @Patch('/ativar')
+  ativarUsuario(@Body() loginDto: LoginDto) {
+    const tokenDecoded: IGoogleIdToken = this.jwtService.decode(
+      loginDto.idToken,
+    );
+
+    const email = tokenDecoded.email;
+
+    this.clientUsuarioBackend.emit('ativar-usuario', email);
   }
 
   @Patch('/perfil')

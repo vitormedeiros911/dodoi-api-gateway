@@ -7,6 +7,7 @@ import { IUsuario } from '../shared/interfaces/usuario.interface';
 import { CriarUsuarioDto } from '../usuario/dto/criar-usuario.dto';
 import { LoginDto } from './dto/login.dto';
 import { IGoogleIdToken } from './interface/google-id-token.interface';
+import { StatusEnum } from 'src/shared/enum/status.enum';
 
 @Injectable()
 export class AuthService {
@@ -28,6 +29,7 @@ export class AuthService {
     let usuario: IUsuario = await firstValueFrom(
       this.clientUsuarioBackend.send('buscar-usuario', {
         email,
+        status: ['ATIVO', 'INATIVO'],
       }),
     );
 
@@ -52,6 +54,12 @@ export class AuthService {
 
       primeiroAcesso = true;
     }
+
+    if (usuario.status === StatusEnum.INATIVO)
+      return {
+        usuario,
+        primeiroAcesso,
+      };
 
     const access_token = this.jwtService.sign({
       ...usuario,

@@ -43,10 +43,13 @@ export class FarmaciaController {
   @Get()
   @ApiOperation({ summary: 'Buscar farmácias' })
   async buscarProdutos(@Query() filtrosFarmaciaDto: FiltrosFarmaciaDto) {
-    return this.clientFarmaciaBackend.send(
-      'buscar-farmacias',
-      filtrosFarmaciaDto,
-    );
+    return this.clientFarmaciaBackend
+      .send('buscar-farmacias', filtrosFarmaciaDto)
+      .pipe(
+        catchError((error) => {
+          throw new HttpException(error.response, error.status);
+        }),
+      );
   }
 
   @Get(':id')

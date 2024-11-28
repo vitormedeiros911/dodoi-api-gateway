@@ -62,7 +62,12 @@ export class AuthService {
       };
 
     const access_token = this.jwtService.sign({
-      ...usuario,
+      id: usuario.id,
+      email: usuario,
+      nome: usuario.nome,
+      urlImagem: usuario.urlImagem,
+      perfis: usuario.perfis,
+      idFarmacia: usuario.idFarmacia,
     });
 
     return {

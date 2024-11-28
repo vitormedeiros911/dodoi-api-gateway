@@ -1,3 +1,4 @@
+import { PerfilEnum } from '../enum/perfil.enum';
 import { StatusEnum } from '../enum/status.enum';
 
 export interface IUsuario {
@@ -6,6 +7,6 @@ export interface IUsuario {
   email: string;
   urlImagem: string;
   idFarmacia: string;
-  perfis: string[];
+  perfis: PerfilEnum[];
   status: StatusEnum;
 }

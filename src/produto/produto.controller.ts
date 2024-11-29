@@ -126,4 +126,12 @@ export class ProdutoController {
         ),
       );
   }
+
+  @Delete(':id')
+  @UseGuards(PerfisGuard)
+  @Perfis([PerfilEnum.ADMIN_FARMACIA])
+  @ApiOperation({ summary: 'Deletar produto' })
+  deletarProduto(@Param('id') id: string) {
+    this.clientProdutoBackend.emit('deletar-produto', id);
+  }
 }

@@ -14,8 +14,10 @@ import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { catchError } from 'rxjs';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
+import { GetUsuario } from '../shared/decorators/get-user.decorator';
 import { Perfis } from '../shared/decorators/perfis.decorator';
 import { PerfilEnum } from '../shared/enum/perfil.enum';
+import { IUsuario } from '../shared/interfaces/usuario.interface';
 import { FarmaciaDto } from './dto/farmacia.dto';
 import { FiltrosFarmaciaDto } from './dto/filtros-produto.dto';
 
@@ -31,13 +33,23 @@ export class FarmaciaController {
     this.clientProxyService.getClientProxyPedidoServiceInstance();
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiSecurity('token')
   @ApiOperation({ summary: 'Criar farmácia' })
-  criarFarmacia(@Body() farmaciaDto: FarmaciaDto) {
-    return this.clientFarmaciaBackend.send('criar-farmacia', farmaciaDto).pipe(
-      catchError((error) => {
-        throw new HttpException(error.response, error.status);
-      }),
-    );
+  criarFarmacia(
+    @Body() farmaciaDto: FarmaciaDto,
+    @GetUsuario() usuario: IUsuario,
+  ) {
+    return this.clientFarmaciaBackend
+      .send('criar-farmacia', {
+        ...farmaciaDto,
+        idUsuarioAdmin: usuario.id,
+      })
+      .pipe(
+        catchError((error) => {
+          throw new HttpException(error.response, error.status);
+        }),
+      );
   }
 
   @Get()

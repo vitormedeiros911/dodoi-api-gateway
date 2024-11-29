@@ -3,11 +3,11 @@ import { JwtService } from '@nestjs/jwt';
 import { catchError, firstValueFrom, throwError } from 'rxjs';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
+import { StatusEnum } from '../shared/enum/status.enum';
 import { IUsuario } from '../shared/interfaces/usuario.interface';
 import { CriarUsuarioDto } from '../usuario/dto/criar-usuario.dto';
 import { LoginDto } from './dto/login.dto';
 import { IGoogleIdToken } from './interface/google-id-token.interface';
-import { StatusEnum } from 'src/shared/enum/status.enum';
 
 @Injectable()
 export class AuthService {

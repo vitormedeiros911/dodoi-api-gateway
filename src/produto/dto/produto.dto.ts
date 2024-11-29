@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsDefined,
   IsEnum,
@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsString,
   IsUrl,
+  IsUUID,
   MaxLength,
 } from 'class-validator';
 import { StatusEnum } from 'src/shared/enum/status.enum';
@@ -20,16 +21,13 @@ export class ProdutoDto {
   nome: string;
 
   @IsString()
-  @IsNotEmpty()
   @MaxLength(500)
   @ApiProperty()
   descricao: string;
 
   @IsString()
-  @IsDefined()
-  @IsNotEmpty()
   @IsUrl()
-  @ApiProperty()
+  @ApiPropertyOptional()
   urlImagem: string;
 
   @IsNumber()
@@ -43,4 +41,16 @@ export class ProdutoDto {
   @IsNotEmpty()
   @ApiProperty({ enum: StatusEnum })
   status: StatusEnum;
+
+  @IsUUID()
+  @IsDefined()
+  @IsNotEmpty()
+  @ApiProperty()
+  idFarmacia: string;
+
+  @IsNumber()
+  @IsDefined()
+  @IsNotEmpty()
+  @ApiProperty()
+  quantidadeDisponivel: number;
 }

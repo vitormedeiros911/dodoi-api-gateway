@@ -39,13 +39,9 @@ export class ProdutoController {
   @UseGuards(PerfisGuard)
   @Perfis([PerfilEnum.ADMIN_FARMACIA])
   @ApiOperation({ summary: 'Criar produto' })
-  criarProduto(
-    @Body() produtoDto: ProdutoDto,
-    @GetUsuario() usuario: IUsuario,
-  ) {
+  criarProduto(@Body() produtoDto: ProdutoDto) {
     this.clientProdutoBackend.emit('criar-produto', {
       ...produtoDto,
-      idFarmacia: usuario.idFarmacia,
     });
   }
 

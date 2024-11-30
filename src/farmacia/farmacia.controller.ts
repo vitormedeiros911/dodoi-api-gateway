@@ -94,7 +94,7 @@ export class FarmaciaController {
   @UseGuards(AuthGuard('jwt'))
   @Perfis([PerfilEnum.ADMIN_FARMACIA])
   @ApiOperation({ summary: 'Aceitar pedido' })
-  async aceitarPedido(@Param('idPedido') idPedido: string) {
+  aceitarPedido(@Param('idPedido') idPedido: string) {
     this.clientPedidoBackend.emit('aceitar-pedido', { idPedido });
   }
 }

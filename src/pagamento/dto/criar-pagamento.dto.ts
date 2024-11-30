@@ -11,6 +11,12 @@ import { ItemPedidoDto } from '../../pedido/dto/item-pedido.dto';
 import { EnderecoDto } from '../../shared/dto/endereco.dto';
 
 export class CriarPagamentoDto {
+  @IsNotEmpty()
+  @IsDefined()
+  @IsString()
+  @ApiProperty()
+  idFarmacia: string;
+
   @IsNumber()
   @IsDefined()
   @IsNumber()

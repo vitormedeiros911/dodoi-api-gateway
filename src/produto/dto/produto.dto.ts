@@ -12,6 +12,8 @@ import {
 } from 'class-validator';
 import { StatusEnum } from 'src/shared/enum/status.enum';
 
+import { CategoriaEnum } from '../enum/categoria.enum';
+
 export class ProdutoDto {
   @IsString()
   @IsNotEmpty()
@@ -53,4 +55,10 @@ export class ProdutoDto {
   @IsNotEmpty()
   @ApiProperty()
   quantidadeDisponivel: number;
+
+  @IsEnum(CategoriaEnum)
+  @IsDefined()
+  @IsNotEmpty()
+  @ApiProperty({ enum: CategoriaEnum })
+  categoria: CategoriaEnum;
 }

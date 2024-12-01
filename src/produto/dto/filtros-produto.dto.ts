@@ -4,6 +4,7 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { PaginationDto } from '../../shared/dto/pagination.dto';
 import { StatusEnum } from '../../shared/enum/status.enum';
 import { OrderEnum } from '../../shared/enum/order.enum';
+import { CategoriaEnum } from '../enum/categoria.enum';
 
 enum OrderByProdutoEnum {
   'createdAt',
@@ -35,4 +36,10 @@ export class FiltrosProdutoDto extends PaginationDto {
   @IsOptional()
   @IsString()
   idFarmacia: string;
+
+  @IsEnum(CategoriaEnum)
+  @IsOptional()
+  @IsNotEmpty()
+  @ApiProperty({ required: false })
+  categoria: CategoriaEnum;
 }

@@ -19,4 +19,16 @@ export class ItemPedidoDto {
   @IsNotEmpty()
   @ApiProperty()
   precoUnitario: number;
+
+  @IsString()
+  @IsDefined()
+  @IsNotEmpty()
+  @ApiProperty()
+  nomeProduto: string;
+
+  @IsString()
+  @IsDefined()
+  @IsNotEmpty()
+  @ApiProperty()
+  urlImagem: string;
 }

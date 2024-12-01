@@ -1,6 +1,14 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { Perfis } from '../shared/decorators/perfis.decorator';
@@ -24,10 +32,18 @@ export class PedidoController {
     return this.clientPedidoBackend.send('listar-pedidos', filtrosPedidoDto);
   }
 
+  @Get(':idPedido')
+  @Perfis([PerfilEnum.CLIENTE, PerfilEnum.ADMIN_FARMACIA])
+  @ApiOperation({ summary: 'Buscar pedido por id' })
+  @ApiParam({ name: 'idPedido', type: String })
+  async buscarPedidoPorId(@Param('idPedido') idPedido: string) {
+    return this.clientPedidoBackend.send('buscar-pedido-por-id', idPedido);
+  }
+
   @Post('aceitar')
   @Perfis([PerfilEnum.ADMIN_FARMACIA])
   @ApiOperation({ summary: 'Aceitar um pedido' })
   async aceitarPedido(@Body('idPedido') idPedido: string) {
-    return this.clientPedidoBackend.emit('aceitar-pedido', idPedido);
+    this.clientPedidoBackend.emit('aceitar-pedido', idPedido);
   }
 }

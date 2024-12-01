@@ -1,9 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import Stripe from 'stripe';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
 
+@ApiTags('Webhook')
 @Controller('webhook')
 export class WebhookController {
   constructor(private readonly clientProxyService: ClientProxyService) {}

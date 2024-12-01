@@ -1,13 +1,15 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { catchError, throwError } from 'rxjs';
 
 import { ClientProxyService } from '../client-proxy/client-proxy.service';
@@ -18,7 +20,7 @@ import { PerfisGuard } from '../shared/guards/perfil.guard';
 import { IUsuario } from '../shared/interfaces/usuario.interface';
 import { CriarPagamentoDto } from './dto/criar-pagamento.dto';
 
-@ApiTags('pagamento')
+@ApiTags('Pagamento')
 @Controller('pagamento')
 export class PagamentoController {
   constructor(private clientProxyService: ClientProxyService) {}
@@ -51,5 +53,29 @@ export class PagamentoController {
           throwError(() => new HttpException(error.message, error.status)),
         ),
       );
+  }
+
+  @Get('/cartao')
+  @UseGuards(AuthGuard('jwt'), PerfisGuard)
+  @ApiSecurity('token')
+  @Perfis([PerfilEnum.CLIENTE])
+  @ApiOperation({ summary: 'Lista os cartões de um usuário' })
+  async listarCartoes(@GetUsuario() usuario: IUsuario) {
+    return this.clientPagamentoBackend.send('listar-cartoes', usuario.email);
+  }
+
+  @Delete('/cartao/:id')
+  @UseGuards(AuthGuard('jwt'), PerfisGuard)
+  @ApiSecurity('token')
+  @Perfis([PerfilEnum.CLIENTE])
+  @ApiOperation({ summary: 'Deleta um cartão de um usuário' })
+  @ApiParam({ name: 'id', type: 'string' })
+  deletarCartao(
+    @Param()
+    data: {
+      id: string;
+    },
+  ) {
+    this.clientPagamentoBackend.emit('delete-cartao', data.id);
   }
 }

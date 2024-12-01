@@ -37,6 +37,10 @@ export class CriarPagamentoDto {
 
   @IsNotEmpty()
   @IsDefined()
+  @ApiProperty({
+    type: ItemPedidoDto,
+    isArray: true,
+  })
   itens: ItemPedidoDto[];
 
   @IsNotEmpty()

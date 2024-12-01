@@ -52,16 +52,6 @@ export class ClientProxyService {
     });
   }
 
-  getClientProxyCarrinhoServiceInstance(): ClientProxy {
-    return ClientProxyFactory.create({
-      transport: Transport.RMQ,
-      options: {
-        urls: [this.url],
-        queue: 'carrinhos',
-      },
-    });
-  }
-
   getClientProxyPedidoServiceInstance(): ClientProxy {
     return ClientProxyFactory.create({
       transport: Transport.RMQ,

@@ -1,9 +1,8 @@
 import {
-  Body,
   Controller,
   Get,
   Param,
-  Post,
+  Patch,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -40,10 +39,27 @@ export class PedidoController {
     return this.clientPedidoBackend.send('buscar-pedido-por-id', idPedido);
   }
 
-  @Post('aceitar')
+  @Patch(':idPedido/aceitar')
   @Perfis([PerfilEnum.ADMIN_FARMACIA])
   @ApiOperation({ summary: 'Aceitar um pedido' })
-  async aceitarPedido(@Body('idPedido') idPedido: string) {
+  @ApiParam({ name: 'idPedido', type: String })
+  aceitarPedido(@Param('idPedido') idPedido: string) {
     this.clientPedidoBackend.emit('aceitar-pedido', idPedido);
+  }
+
+  @Patch(':idPedido/cancelar')
+  @Perfis([PerfilEnum.ADMIN_FARMACIA])
+  @ApiOperation({ summary: 'Cancelar um pedido' })
+  @ApiParam({ name: 'idPedido', type: String })
+  cancelarPedido(@Param('idPedido') idPedido: string) {
+    this.clientPedidoBackend.emit('cancelar-pedido', idPedido);
+  }
+
+  @Patch(':idPedido/iniciar-entrega')
+  @Perfis([PerfilEnum.ADMIN_FARMACIA])
+  @ApiOperation({ summary: 'Iniciar entrega de um pedido' })
+  @ApiParam({ name: 'idPedido', type: String })
+  iniciarEntrega(@Param('idPedido') idPedido: string) {
+    this.clientPedidoBackend.emit('iniciar-entrega', idPedido);
   }
 }

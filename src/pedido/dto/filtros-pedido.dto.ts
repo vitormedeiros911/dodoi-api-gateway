@@ -20,11 +20,6 @@ export class FiltrosPedidoDto extends PaginationDto {
   @ApiProperty({ required: false })
   idFarmacia: string;
 
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty({ required: false })
-  idEntregador: string;
-
   @IsEnum(StatusPedidoEnum, { each: true })
   @IsNotEmpty()
   @ApiProperty({ required: false, enum: StatusPedidoEnum, isArray: true })

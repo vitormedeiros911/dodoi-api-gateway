@@ -62,4 +62,12 @@ export class PedidoController {
   iniciarEntrega(@Param('idPedido') idPedido: string) {
     this.clientPedidoBackend.emit('iniciar-entrega', idPedido);
   }
+
+  @Patch(':idPedido/finalizar-entrega')
+  @Perfis([PerfilEnum.ADMIN_FARMACIA])
+  @ApiOperation({ summary: 'Finalizar entrega de um pedido' })
+  @ApiParam({ name: 'idPedido', type: String })
+  finalizarEntrega(@Param('idPedido') idPedido: string) {
+    this.clientPedidoBackend.emit('finalizar-entrega', idPedido);
+  }
 }

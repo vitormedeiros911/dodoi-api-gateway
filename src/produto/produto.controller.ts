@@ -109,22 +109,16 @@ export class ProdutoController {
   @UseGuards(PerfisGuard)
   @Perfis([PerfilEnum.ADMIN_FARMACIA])
   @ApiOperation({ summary: 'Atualizar produto' })
-  async atualizarProduto(
+  atualizarProduto(
     @Param('id') id: string,
     @Body() produtoDto: ProdutoDto,
     @GetUsuario() usuario: IUsuario,
   ) {
-    return this.clientProdutoBackend
-      .send('atualizar-produto', {
-        id,
-        ...produtoDto,
-        idFarmacia: usuario.idFarmacia,
-      })
-      .pipe(
-        catchError((error) =>
-          throwError(() => new HttpException(error.response, error.status)),
-        ),
-      );
+    this.clientProdutoBackend.emit('atualizar-produto', {
+      id,
+      ...produtoDto,
+      idFarmacia: usuario.idFarmacia,
+    });
   }
 
   @Delete(':id')

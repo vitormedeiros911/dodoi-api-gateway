@@ -29,9 +29,6 @@ export class FarmaciaController {
   private clientFarmaciaBackend =
     this.clientProxyService.getClientProxyFarmaciaServiceInstance();
 
-  private clientPedidoBackend =
-    this.clientProxyService.getClientProxyPedidoServiceInstance();
-
   @Post()
   @UseGuards(AuthGuard('jwt'))
   @ApiSecurity('token')
@@ -77,24 +74,10 @@ export class FarmaciaController {
   @Perfis([PerfilEnum.ADMIN_FARMACIA])
   @ApiSecurity('token')
   @ApiOperation({ summary: 'Atualizar farmácia' })
-  async atualizarFarmacia(
-    @Param('id') id: string,
-    @Body() farmaciaDto: FarmaciaDto,
-  ) {
-    return this.clientFarmaciaBackend
-      .send('atualizar-farmacia', { id, ...farmaciaDto })
-      .pipe(
-        catchError((error) => {
-          throw new HttpException(error.response, error.status);
-        }),
-      );
-  }
-
-  @Put('pedido/:idPedido/aceitar')
-  @UseGuards(AuthGuard('jwt'))
-  @Perfis([PerfilEnum.ADMIN_FARMACIA])
-  @ApiOperation({ summary: 'Aceitar pedido' })
-  aceitarPedido(@Param('idPedido') idPedido: string) {
-    this.clientPedidoBackend.emit('aceitar-pedido', { idPedido });
+  atualizarFarmacia(@Param('id') id: string, @Body() farmaciaDto: FarmaciaDto) {
+    this.clientFarmaciaBackend.emit('atualizar-farmacia', {
+      id,
+      ...farmaciaDto,
+    });
   }
 }

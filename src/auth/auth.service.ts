@@ -76,4 +76,25 @@ export class AuthService {
       access_token,
     };
   }
+
+  async refreshToken(idUsuario: string) {
+    const usuario: IUsuario = await firstValueFrom(
+      this.clientUsuarioBackend.send('buscar-usuario', {
+        id: idUsuario,
+      }),
+    );
+
+    const access_token = this.jwtService.sign({
+      id: usuario.id,
+      email: usuario.email,
+      nome: usuario.nome,
+      urlImagem: usuario.urlImagem,
+      perfis: usuario.perfis,
+      idFarmacia: usuario.idFarmacia,
+    });
+
+    return {
+      access_token,
+    };
+  }
 }
